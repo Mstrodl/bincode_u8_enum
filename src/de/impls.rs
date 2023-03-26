@@ -1,6 +1,6 @@
 use super::{
-    read::{BorrowReader, Reader},
     BorrowDecode, BorrowDecoder, Decode, Decoder,
+    read::{BorrowReader, Reader},
 };
 use crate::{
     config::{Endianness, IntEncoding, InternalEndianConfig, InternalIntEncodingConfig},
@@ -11,8 +11,8 @@ use core::{
     cell::{Cell, RefCell},
     cmp::Reverse,
     num::{
-        NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
-        NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize, Wrapping,
+        NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8,
+        NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize, Wrapping,
     },
     ops::{Bound, Range, RangeInclusive},
     time::Duration,
@@ -596,7 +596,7 @@ where
                 Ok(Err(u))
             }
             x => Err(DecodeError::UnexpectedVariant {
-                found: x,
+                found: x as u8,
                 allowed: &crate::error::AllowedEnumVariants::Range { max: 1, min: 0 },
                 type_name: core::any::type_name::<Result<T, U>>(),
             }),
@@ -623,7 +623,7 @@ where
                 Ok(Err(u))
             }
             x => Err(DecodeError::UnexpectedVariant {
-                found: x,
+                found: x as u8,
                 allowed: &crate::error::AllowedEnumVariants::Range { max: 1, min: 0 },
                 type_name: core::any::type_name::<Result<T, U>>(),
             }),
@@ -746,7 +746,7 @@ where
             2 => Ok(Bound::Excluded(T::decode(decoder)?)),
             x => Err(DecodeError::UnexpectedVariant {
                 allowed: &crate::error::AllowedEnumVariants::Range { max: 2, min: 0 },
-                found: x,
+                found: x as u8,
                 type_name: core::any::type_name::<Bound<T>>(),
             }),
         }
@@ -766,7 +766,7 @@ where
             2 => Ok(Bound::Excluded(T::borrow_decode(decoder)?)),
             x => Err(DecodeError::UnexpectedVariant {
                 allowed: &crate::error::AllowedEnumVariants::Range { max: 2, min: 0 },
-                found: x,
+                found: x as u8,
                 type_name: core::any::type_name::<Bound<T>>(),
             }),
         }
